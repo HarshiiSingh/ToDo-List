@@ -1,0 +1,11 @@
+STEP 1
+-----------------------------------------------------------------------
+Create ToDo List using base Python Operations. 
+Works only when ran.
+
+STEP 2
+-----------------------------------------------------------------------
+Create the ToDo List and have it so after the program is ran, it keeps the inputted data from
+the previous program. This can be done using a .csv or .json format where after you input the
+List on a previous run, the next time you open the program the tasks from the previous inputted
+program will be saved.
