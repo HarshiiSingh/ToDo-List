@@ -1,43 +1,52 @@
+import json
+
+
+def save_tasks_to_file(tasks, filename):
+    with open(filename, 'w') as f:
+        json.dump(tasks, f)
+
+def load_tasks_from_file(filename):
+    with open(filename, 'r') as f:
+        tasks = json.load(f)
+    return tasks
+
+filename = "tasks.json"
+
 # To-Do list
-tasks = []
+try:
+    tasks = load_tasks_from_file(filename)
+except FileNotFoundError:
+    tasks = []
 
-
-def add_task():
-    task = input("Enter a new task: ")
-    tasks.append(task)
-
-
-def show_tasks():
-    print("To-Do List: ")
-    for index, task in enumerate(tasks):
-        print(f"{index + 1}. {task}")
-
-
-def remove_task():
-    index = int(input("Enter the task number to remove: "))
-    tasks.pop(index - 1)
-
-def display_menu():
-    print("\nMenu")
-    print("1. Add a new task")
-    print("2. Show all tasks")
-    print("3. Remove a task")
-    print("4. Exit")
-
-
+# Main Program
 while True:
-    display_menu()
-    choice = input("Enter your choice (1-4): ")
+    print("Current tasks: ")
+    for i, task in enumerate(tasks):
+        print(f"{i+1}. {task['name']} ({task['priority']})")
 
-    if choice == "1":
-        add_task()
-    elif choice == "2":
-        show_tasks()
-    elif choice == "3":
-        remove_task()
-    elif choice == "4":
+    commands = input("Enter a command (add, remove, quit): ").lower()
+
+    if commands == "quit":
         break
-    else:
-        print("Invalid choice. Please try again.")
 
-print("Goodbye!")
+    if commands == "add":
+        task_name = input("Enter a task name: ")
+        task_priority = input("Enter a task priority (high, medium, low): ")
+        tasks.append({
+                "name": task_name,
+                "priority": task_priority,
+                })
+
+    if commands == "remove":
+        task_index = int(input("Enter task index to remove: ")) - 1
+        if task_index < 0 or task_index >= len(tasks):
+            print("Invalid task index.")
+        else:
+            removed_task = tasks.pop(task_index)
+            print(f"Remove task: {removed_task['name']} ({removed_task['priority']})")
+
+    save_tasks_to_file(tasks, filename)
+
+print("Saved tasks: ")
+for task in tasks:
+    print(f" - {task['name']} ({task['priority']})")
